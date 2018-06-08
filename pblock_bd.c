@@ -63,7 +63,7 @@ int main(int argc, char * * argv) {
 	}
 
 	/* construct operations and run buse */
-	fprintf(stderr, "starting pblock-buse\n");
+	fprintf(stderr, "starting pblock-bd\n");
 	struct buse_operations operations = {
 		.read = pblock_read,
 		.write = pblock_write,

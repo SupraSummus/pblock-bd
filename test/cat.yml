@@ -11,7 +11,7 @@ nodes:
       set -e
       # run buse in background and kill it on exit
       trap "kill %1" EXIT
-      pblock-buse 15 1024 /dev/nbd0 &
+      pblock-bd 15 1024 /dev/nbd0 &
       # wait a bit and then check device content
       sleep 1
       head -c 10 /dev/nbd0 | ./stdin-eq 0123456789

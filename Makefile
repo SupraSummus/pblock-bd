@@ -1,16 +1,16 @@
 CFLAGS = -Wall -Wextra --pedantic -I pblock-c -I buse
 HEADERS = buse/buse.h pblock-c/pblock.h pblock-c/varint.h pblock-c/fd_util.h
-SOURCES = buse/buse.c pblock_buse.c
+SOURCES = buse/buse.c pblock_bd.c
 
 .PHONY: all test clean
 
-all: pblock-buse
+all: pblock-bd
 
-pblock-buse: $(HEADERS) $(SOURCES)
+pblock-bd: $(HEADERS) $(SOURCES)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SOURCES)
 
-test: pblock-buse
+test: pblock-bd
 	./test.sh
 
 clean:
-	rm -f pblock-buse
+	rm -f pblock-bd
