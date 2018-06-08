@@ -1,0 +1,3 @@
+[submodule "buse"]
+	path = buse
+	url = https://github.com/acozzette/BUSE.git

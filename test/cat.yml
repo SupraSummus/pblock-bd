@@ -1,0 +1,19 @@
+nodes:
+  - command: [pblock-srv, test_file.txt]
+    sockets:
+      3: file
+  - command:
+    - sudo
+    - -C 100 # keep fds open
+    - bash
+    - -c
+    - |
+      set -e
+      # run buse in background and kill it on exit
+      trap "kill %1" EXIT
+      pblock-buse 15 1024 /dev/nbd0 &
+      # wait a bit and then check device content
+      sleep 1
+      head -c 10 /dev/nbd0 | ./stdin-eq 0123456789
+    sockets:
+      15: file
