@@ -1,0 +1,32 @@
+nodes:
+  - command:
+    - bash
+    - -c
+    - |
+      set -e
+      # create file and remove it on exit
+      trap 'rm "$FILE"' EXIT
+      FILE=$(mktemp)
+      head -c 4096 /dev/zero > "$FILE"
+      # server the file
+      pblock-srv "$FILE"
+      # check contents
+      head -c 10 "$FILE" | ./stdin-eq '012345678\0'
+    sockets:
+      3: file
+  - command:
+    - sudo
+    - -C 100 # keep fds open
+    - bash
+    - -c
+    - |
+      set -e
+      # run buse in background and kill it on exit
+      trap "kill %1" EXIT
+      pblock-bd 3 4096 /dev/nbd0 &
+      # wait a bit and then check device content
+      sleep 1
+      dd if=./test_file.txt of=/dev/nbd0 bs=1 count=9 status=none
+      sync
+    sockets:
+      3: file
