@@ -20,7 +20,7 @@ Tests
 -----
 
 Dependencies:
- * [pgspwan](https://github.com/SupraSummus/pgspawn)
+ * [pgspawn](https://github.com/SupraSummus/pgspawn)
  * [pblock utilities](https://github.com/SupraSummus/pblock)
 
 Currently tests require root previlages. Test runner uses `sudo` to provide them.
