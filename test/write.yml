@@ -24,7 +24,7 @@ nodes:
       # run buse in background and kill it on exit
       trap "kill %1" EXIT
       pblock-bd 3 4096 /dev/nbd0 &
-      # wait a bit and then check device content
+      # wait a bit and then write device content
       sleep 1
       dd if=./test_file.txt of=/dev/nbd0 bs=1 count=9 status=none
       sync

@@ -16,6 +16,11 @@ Under the hood it uses [nbd](https://github.com/NetworkBlockDevice/nbd) kernel i
 
 I didn't found any information about `nbd` being transactional, so currently every read or write on `nbd` is wrapped in separate `pblock` transaction.
 
+Install
+-------
+
+    make install PREFIX=~/.local
+
 Tests
 -----
 
