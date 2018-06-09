@@ -8,13 +8,11 @@ Under the hood it uses [nbd](https://github.com/NetworkBlockDevice/nbd) kernel i
 `nbd` and `pblock` differences
 ------------------------------
 
-Device size
-~~~~~~~~~~~
+### Device size
 
 `pblock` doesn't have notion of file size and `nbd` requires it to create block device. As a result you have to pass device size in `pblock-bd` command args.
 
-Transactional access
-~~~~~~~~~~~~~~~~~~~~
+### Transactional access
 
 I didn't found any information about `nbd` being transactional, so currently every read or write on `nbd` is wrapped in separate `pblock` transaction.
 
