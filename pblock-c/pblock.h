@@ -161,7 +161,7 @@ void pblock_terminate_session(int wfd, int rfd) {
 		warn("problem during closing writing stream");
 	}
 	char ch;
-	if (read(rfd, &ch, 1) != 1) {
+	if (read(rfd, &ch, 1) != 0) {
 		warnx(
 			"Reading stream wasn't empty on session termination. "
 			"Either server is misbehaving or desynchronization ocurred."

@@ -1,0 +1,44 @@
+nodes:
+  - command:
+    - bash
+    - -c
+    - |
+      set -e
+      # create file and remove it on exit
+      trap 'rm "$FILE"' EXIT
+      FILE=$(mktemp)
+      echo "content is stored in file $FILE"
+      # serve the file
+      trap "" SIGINT  # ignore signal that would interrupt serving. Server will exit on its own.
+      pblock-srv -v "$FILE"
+    sockets:
+      3: file
+  - command:
+    - sudo
+    - -C 100 # keep fds open
+    - bash
+    - -c
+    - |
+      set -e
+      DEV=/dev/nbd0
+      # exit hook
+      function cleanup () {
+        umount "$MOUNTDIR"
+        nbd-client -d "$DEV"  # request nbd (handled by pblock-bd) disconect
+        rmdir "$MOUNTDIR"
+      }
+      trap cleanup EXIT
+      # run buse in background (128MB device)
+      pblock-bd 3 134217728 "$DEV" &
+      # wait a bit and then format
+      sleep 1
+      mkfs.ext4 "$DEV"
+      # create mount dir and mount
+      MOUNTDIR=$(mktemp -d)
+      mount "$DEV" "$MOUNTDIR"
+      echo "block device $DEV mounted at $MOUNTDIR"
+      chmod a+rwx "$MOUNTDIR"  # all can access
+      # wait for pblock-bd
+      wait $!
+    sockets:
+      3: file
